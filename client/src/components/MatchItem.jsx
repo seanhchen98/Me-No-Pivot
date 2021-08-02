@@ -1,0 +1,77 @@
+import React from 'react';
+import 'bulma/css/bulma.min.css';
+
+import MatchUnits from './MatchUnits.jsx';
+
+const MatchItem = ({match}) => {
+  let m = match;
+  let time = convertDateToTime(m);
+  let gamemode = determineGamemode(m);
+  return (
+    <div className="container box is-family-primary">
+      <div className="columns">
+        <div className="column is-one-quarter">
+          <Placement place={match.playerMatchInfo.placement}/>
+          <div className="subtitle">{gamemode}</div>
+          <h1>Date: {match.date}</h1>
+        </div>
+        <div className="column is-three-quarters">
+          <div className="container"></div>
+          <div className="container level-item">
+            <MatchUnits units={match.playerMatchInfo.units} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const determineGamemode = (m) => {
+  if (m.mode === 'standard') {
+    if (m.queueId === 1100) {
+      return 'Ranked';
+    } if (m.queueId === 1090) {
+      return 'Normals';
+    }
+  } else if (m.mode === 'turbo') {
+    return 'Hyperroll';
+  }
+};
+
+const Placement = ({place}) => {
+  if (place === 1) {
+    return (
+      <div className="title has-text-warning">1st</div>
+    );
+  } else if (place === 2) {
+    return (
+      <div className="title has-text-info-light">2nd</div>
+    );
+  } else if (place === 3) {
+    return (
+      <div className="title has-text-warning-dark">3rd</div>
+    )
+  } else if (place === 4) {
+    return (
+      <div className="title has-text-grey">4th</div>
+    );
+  } else {
+    return (
+      <div className="title has-text-dark">{place}th</div>
+    );
+  }
+};
+
+const convertDateToTime = (m) => {
+  let match = m.unixDate;
+  let present = Date.now();
+  console.log('match time:', match);
+  console.log('present time: ', present);
+  let diff = present - match;
+  console.log('diff: ', diff);
+
+
+}
+
+
+export default MatchItem;
