@@ -34,22 +34,15 @@ const generateRankString = (gamemodes) => {
   for (let i = 0; i < gamemodes.length; i++) {
     let gamemode = gamemodes[i];
     if (gamemode.queueType === 'RANKED_TFT') {
-      console.log(gamemode.tier);
       if (gamemode.tier === 'MASTER' || gamemode.tier ==='GRANDMASTER' || gamemode.tier === 'CHALLENGER') {
-        console.log('yello')
         ranking = gamemode.tier;
       } else {
-        console.log('hello')
         ranking = `${gamemode.tier} ${gamemode.rank}`;
       }
     }
   }
   return ranking;
 }
-
-Stats.propTypes = {
-
-};
 
 export default Stats;
 

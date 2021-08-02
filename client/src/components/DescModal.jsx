@@ -3,7 +3,7 @@ import $ from 'jquery';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
-const DescModl = ({element, type}) => {
+const DescModal = ({element, type}) => {
   if (type === 'unit') {
     return (
       <div className="modal">

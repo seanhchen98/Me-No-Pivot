@@ -83,7 +83,6 @@ const urlifyIcons = (icon) => {
 };
 
 const ItemIcons = ({url}) => {
-  console.log('url: ', url);
   if (url) {
     return (
       <figure className="image is-16x16">

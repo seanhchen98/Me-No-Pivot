@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import Tier from './Tier.jsx';
 import UnitItems from './UnitItems.jsx';
-import HoverBubble from './HoverBubble.jsx';
+import DescModal from './DescModal.jsx';
 
 import styled from 'styled-components';
 
@@ -45,7 +45,6 @@ const checkStage2Units = (championId) => {
 
 const addRarityColor = (rarity) => {
   let color = '';
-  console.log('rarity: ', rarity);
   if (rarity === 0) {
     color = 'grey';
   } else if (rarity === 1) {

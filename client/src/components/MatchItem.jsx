@@ -5,7 +5,6 @@ import MatchUnits from './MatchUnits.jsx';
 
 const MatchItem = ({match}) => {
   let m = match;
-  let time = convertDateToTime(m);
   let gamemode = determineGamemode(m);
   return (
     <div className="container box is-family-primary">
@@ -61,17 +60,5 @@ const Placement = ({place}) => {
     );
   }
 };
-
-const convertDateToTime = (m) => {
-  let match = m.unixDate;
-  let present = Date.now();
-  console.log('match time:', match);
-  console.log('present time: ', present);
-  let diff = present - match;
-  console.log('diff: ', diff);
-
-
-}
-
 
 export default MatchItem;
