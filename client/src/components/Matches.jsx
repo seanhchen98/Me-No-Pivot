@@ -15,8 +15,8 @@ const Matches = ({matches}) => {
   );
 };
 
-// Matches.propTypes = {
-//   matches:
-// }
+Matches.propTypes = {
+  matches: PropTypes.array,
+};
 
 export default Matches;

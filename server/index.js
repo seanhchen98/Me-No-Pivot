@@ -143,13 +143,26 @@ const aggregateMatchData = (matchDetails, relevantMatch) => {
   let info = matchDetails.info;
   let meta = matchDetails.metadata;
   let date = new Date(info.game_datetime);
+
+  const determineSet = (set, version) => {
+
+    let ver = version.substring(version.length - 15, version.length - 1);
+    console.log('VER: ', ver);
+    if (ver.includes('11.15')) {
+      return set + 0.5;
+    } else {
+      return set;
+    }
+
+  };
+  let setVersion = determineSet(info.tft_set_number, info.game_version);
   return {
     id: meta.match_id,
     unixDate: info.game_datetime,
     date: date.toLocaleString(),
     length: info.game_length,
     queueId: info.queue_id,
-    set: info.tft_set_number,
+    set: setVersion,
     mode: info.tft_game_type,
     version: info.game_version,
     playerMatchInfo: relevantMatch,

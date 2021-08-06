@@ -1,26 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
 const Stats = ({result}) => {
-  let ranking = generateRankString(result.leagueInfo);
+  const ranking = generateRankString(result.leagueInfo);
+  let leagueInfo = {};
+  if (result.leagueInfo[0]) {
+    leagueInfo = result.leagueInfo[0];
+  };
+  let rankedWinrate = (leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses) * 100).toFixed(2);
+
+  let recentTop4 = getRecentStats(result.matches);
+
   return (
     <div className="box">
-      <div className="block level">
-        <figure className="image is-96x96" style={{border: '2px solid black'}}>
-          <img src={result.profileIconId} />
-        </figure>
-        <div className="level-item">
-          <div className="level">
-            <div className="title level-item block">{result.name} { }</div>
-            <div className="tag is-dark level-item block">
-              <div className="subtitle has-text-white">{result.region}</div>
-            </div>
+      <div className="block columns">
+        <div className="column is-one-third">
+          <figure className="image is-96x96" style={{border: '2px solid black'}}>
+            <img src={result.profileIconId} />
+          </figure>
+        </div>
+        <div className="column">
+          <div className="title block">{result.name}</div>
+          <div className="block">
+            <div className="tag is-info" style={{marginRight: 4}}>{result.region}</div>
+            <div className="tag is-info" style={{marginRight: 4}}>Lvl. {result.summonerLevel}</div>
+            <div className="tag is-info" style={{marginRight: 4}}>Set 5.5</div>
           </div>
         </div>
       </div>
       <div className="block">
-        Rank: {ranking}
+        <div className="">Rank: {ranking}</div>
+        <div className="">Wins: {leagueInfo.wins}</div>
+        <div className="">Winrate: {rankedWinrate}%</div>
+      </div>
+      <div className="block">
+        <div className="subtitle">Last 10 games stats</div>
+        <div className="block">
+          <div className="">Average Placement: {recentTop4}</div>
+        </div>
       </div>
     </div>
   );
@@ -42,7 +60,15 @@ const generateRankString = (gamemodes) => {
     }
   }
   return ranking;
-}
+};
+
+const getRecentStats = (matches) => {
+  let total = 0;
+  for (let i = 0; i < matches.length; i++) {
+    total += matches[i].playerMatchInfo.placement;
+  };
+  return (total / matches.length).toFixed(2);
+};
 
 export default Stats;
 

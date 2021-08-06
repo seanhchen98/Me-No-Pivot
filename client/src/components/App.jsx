@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
@@ -25,7 +26,7 @@ class App extends React.Component {
         summonerLevel: 0,
         leagueInfo: [],
         matches: [],
-      }
+      },
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.inputSearch = this.inputSearch.bind(this);
@@ -124,10 +125,6 @@ class App extends React.Component {
       </div>
     );
   };
-};
-
-App.PropTypes = {
-
 };
 
 export default App;

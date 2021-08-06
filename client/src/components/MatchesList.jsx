@@ -10,4 +10,8 @@ const MatchesList = ({matches}) => (
   ))
 );
 
+MatchesList.propTypes = {
+  matches: PropTypes.array,
+};
+
 export default MatchesList;

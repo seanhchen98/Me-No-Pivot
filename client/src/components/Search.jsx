@@ -40,4 +40,10 @@ const Search = ({handleSearch, inputSearch, selectRegion}) => {
   );
 };
 
+Search.propTypes = {
+  handleSearch: PropTypes.func,
+  inputSearch: PropTypes.func,
+  selectRegion: PropTypes.func,
+};
+
 export default Search;

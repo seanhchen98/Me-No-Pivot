@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
@@ -11,6 +10,10 @@ const Loading = ({searchProgress}) => {
         </div>
       </div>
   );
+};
+
+Loading.propTypes = {
+  searchProgress: PropTypes.bool,
 };
 
 export default Loading;

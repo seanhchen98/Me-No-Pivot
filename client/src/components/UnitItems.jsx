@@ -11,36 +11,10 @@ const UnitItems = ({itemIds}) => {
     let targetItems = [];
     for (let i = 0; i < itemIds.length; i++) {
       if (itemIds[i] === 38) {
-        let item = {
-          "desc": "The holder gains the Spellweaver trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
-          "effects": {
-              "AP": 10.0
-          },
-          "from": [
-              3,
-              8
-          ],
-          "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Spellweaver.dds",
-          "id": 38,
-          "name": "Spellweaver Emblem",
-          "unique": true
-        };
+        let item = spellweaverSpat;
         targetItems.push(item);
       } else if (itemIds[i] === 48) {
-        let item = {
-          "desc": "The holder gains the Renewer trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
-            "effects": {
-                "Mana": 15.0
-            },
-            "from": [
-                8,
-                4
-            ],
-            "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Rejuvenator.dds",
-            "id": 48,
-            "name": "Renewer Emblem",
-            "unique": true
-        };
+        let item = renewerSpat;
         targetItems.push(item);
       } else {
         let j = 0;
@@ -48,6 +22,10 @@ const UnitItems = ({itemIds}) => {
           j++;
         }
         if (itemsData[j].id === itemIds[i]) {
+          if (itemIds[i] === 99  || itemIds[i] === 2099) {
+            targetItems.push(itemsData[j]);
+            break;
+          }
           if (itemIds[i] !== 10006) {
             targetItems.push(itemsData[j]);
           }
@@ -62,7 +40,7 @@ const UnitItems = ({itemIds}) => {
   return (
     <div className="block level">
       {displayItems.map((icon, index) => (
-        <ItemIcons url={icon} />
+        <ItemIcons url={icon} key={index}/>
       ))}
     </div>
   );
@@ -94,6 +72,36 @@ const ItemIcons = ({url}) => {
       <div className="">{ }</div>
     )
   }
-}
+};
+
+const renewerSpat = {
+  "desc": "The holder gains the Renewer trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
+    "effects": {
+        "Mana": 15.0
+    },
+    "from": [
+        8,
+        4
+    ],
+    "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Rejuvenator.dds",
+    "id": 48,
+    "name": "Renewer Emblem",
+    "unique": true
+};
+
+const spellweaverSpat = {
+  "desc": "The holder gains the Spellweaver trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
+  "effects": {
+      "AP": 10.0
+  },
+  "from": [
+      3,
+      8
+  ],
+  "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Spellweaver.dds",
+  "id": 38,
+  "name": "Spellweaver Emblem",
+  "unique": true
+};
 
 export default UnitItems;
