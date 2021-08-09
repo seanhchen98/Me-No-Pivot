@@ -85,7 +85,7 @@ app.get('/search/:summoner', (req, res) => {
         ]
         */
 
-        const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${summonerInfo.puuid}/ids?count=10&api_key=${api_key}`;
+        const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${summonerInfo.puuid}/ids?count=25&api_key=${api_key}`;
         let matchesDetails = [];
         axios.get(getTftMatchesAPI).then((response) => {
           let matches = response.data;
@@ -98,12 +98,19 @@ app.get('/search/:summoner', (req, res) => {
               if (matchesDetails.length === matches.length) {
                 let relevantMatch = [];
                 grabPlayerMatchData(matchesDetails, summonerInfo.puuid, relevantMatch, res, summonerInfo, leagueInfo, region);
-                // console.log( relevantMatch);
               }
+            }).catch((error) => {
+              console.log('ERROR: ', error);
             });
           }
+        }).catch((error) => {
+          console.log('ERROR: ', error);
         });
+    }).catch((error) => {
+      console.log('ERROR: ', error);
     });
+  }).catch((error) => {
+    console.log('ERROR: ', error);
   });
 });
 
@@ -132,20 +139,17 @@ const grabPlayerMatchData = (matchesDetails, puuid, relevantMatch, res, summoner
             returnData(res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region);
           }
         };
-      }, 500 * j);
+      }, 10000 * j);
     }
   }
 };
 
 const aggregateMatchData = (matchDetails, relevantMatch) => {
-  //console.log('matchesDetails[i]: ', matchDetails);
-  //console.log('relevant Match: ', relevantMatch);
   let info = matchDetails.info;
   let meta = matchDetails.metadata;
   let date = new Date(info.game_datetime);
 
   const determineSet = (set, version) => {
-
     let ver = version.substring(version.length - 15, version.length - 1);
     console.log('VER: ', ver);
     if (ver.includes('11.15')) {
@@ -153,8 +157,8 @@ const aggregateMatchData = (matchDetails, relevantMatch) => {
     } else {
       return set;
     }
-
   };
+
   let setVersion = determineSet(info.tft_set_number, info.game_version);
   return {
     id: meta.match_id,
@@ -177,13 +181,12 @@ const sortMatches = (relevantMatch) => {
 }
 
 const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region) => {
-  //console.log('hello')
   const PATCH = '11.15.1';
 
   let returnData = {
     name: summonerInfo.name,
     region: region,
-    profileIconId: `https://cdn.communitydragon.org/${PATCH}/profile-icon/${summonerInfo.profileIconId}`,
+    profileIconId: `https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon${summonerInfo.profileIconId}.png`,
     revisionDate: summonerInfo.revisionDate.toLocaleString(),
     summonerLevel: summonerInfo.summonerLevel,
     leagueInfo: leagueInfo,

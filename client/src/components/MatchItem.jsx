@@ -44,7 +44,7 @@ const Placement = ({place}) => {
     );
   } else if (place === 2) {
     return (
-      <div className="title has-text-info-light">2nd</div>
+      <div className="title" style={{color: '#C5DCE1'}}>2nd</div>
     );
   } else if (place === 3) {
     return (

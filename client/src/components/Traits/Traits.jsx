@@ -13,7 +13,6 @@ const Traits = ({traits}) => {
 };
 
 Traits.propTypes = {
-
 };
 
 export default Traits;

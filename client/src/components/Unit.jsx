@@ -18,7 +18,7 @@ const Unit = ({unit}) => {
   return (
     <div className="container" style={{height: 80}}>
       <div className="">
-        <div className="level" style={{marginBottom: 4}}>
+        <div className="level mb-1">
           <Tier tier={unit.tier} color={color}/>
         </div>
         <div className="">
@@ -26,7 +26,7 @@ const Unit = ({unit}) => {
             <img src={championSplash} />
           </figure>
         </div>
-        <div className="level" style={{marginTop: 4}}>
+        <div className="level mt-1">
           <UnitItems itemIds={unit.items}/>
         </div>
       </div>
