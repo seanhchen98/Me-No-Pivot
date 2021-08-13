@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bulma/css/bulma.min.css';
 
+import Traits from './Traits/Traits.jsx';
 import MatchUnits from './MatchUnits.jsx';
 
 const MatchItem = ({match}) => {
@@ -15,7 +16,9 @@ const MatchItem = ({match}) => {
           <h1>Date: {match.date}</h1>
         </div>
         <div className="column is-three-quarters">
-          <div className="container"></div>
+          <div className="container block">
+            <Traits traits={match.playerMatchInfo.traits}/>
+          </div>
           <div className="container level-item">
             <MatchUnits units={match.playerMatchInfo.units} />
           </div>
@@ -61,8 +64,8 @@ const Placement = ({place}) => {
   }
 };
 
-MatchItem.propTypes = {
-
-}
+// MatchItem.propTypes = {
+//   match: PropTypes.object,
+// };
 
 export default MatchItem;

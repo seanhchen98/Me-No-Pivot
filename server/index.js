@@ -85,7 +85,7 @@ app.get('/search/:summoner', (req, res) => {
         ]
         */
 
-        const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${summonerInfo.puuid}/ids?count=25&api_key=${api_key}`;
+        const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${summonerInfo.puuid}/ids?count=10&api_key=${api_key}`;
         let matchesDetails = [];
         axios.get(getTftMatchesAPI).then((response) => {
           let matches = response.data;
@@ -139,7 +139,7 @@ const grabPlayerMatchData = (matchesDetails, puuid, relevantMatch, res, summoner
             returnData(res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region);
           }
         };
-      }, 10000 * j);
+      }, 0 * j);
     }
   }
 };
