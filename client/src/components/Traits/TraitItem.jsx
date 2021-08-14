@@ -6,16 +6,16 @@ import PropTypes from 'prop-types';
 const TraitItem = ({trait}) => {
   if (trait.blank) {
     return (
-      <div className="level-item" style={{width: 51.641, height: 34.328}}></div>
+      <div className="level-item" style={{width: 30, height: 34.328}}></div>
     );
   } else {
     const style = applyTraitHex(trait.style);
     const icon = applyTraitIcon(trait.name);
     return (
-      <div className="level-item">
-        <div className="is-align-items-center is-justify-content-center m-auto" style={{backgroundImage: `url(${style})`, backgroundSize: '29.67px 34.33px', width: 30, height: 34.34, position: 'static'}}>
-          <figure className="image is-16x16 m-auto">
-            <img className="" src={icon} style={{verticalAlign: 'bottom', filter: 'invert(100%)'}}/>
+      <div className="level-item" style={{width: 30, height: 34.328}}>
+        <div className="is-align-items-center is-justify-content-center" style={{backgroundImage: `url(${style})`, backgroundSize: '29.67px 34.33px', width: 30, height: 34.34, marginLeft: 0}}>
+          <figure className="image is-16x16 m-auto is-unselectable">
+            <img className="is-unselectable" src={icon} style={{verticalAlign: 'bottom', filter: 'invert(100%)'}}/>
           </figure>
         </div>
       </div>

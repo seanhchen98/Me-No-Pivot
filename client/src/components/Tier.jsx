@@ -7,7 +7,7 @@ const Tier = ({tier}) => {
   let tiers = [];
   let color = '';
   if (tier === 1) {
-    color = '#585858';
+    color = '#BEBEBE';
   } else if (tier === 2) {
     color = '#C5DCE1';
   } else if (tier === 3) {

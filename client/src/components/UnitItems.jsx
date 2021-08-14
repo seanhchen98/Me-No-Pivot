@@ -16,6 +16,9 @@ const UnitItems = ({itemIds}) => {
       } else if (itemIds[i] === 48) {
         let item = renewerSpat;
         targetItems.push(item);
+      } else if (itemIds[i] === 18) {
+        let item = skirmisherSpat;
+        targetItems.push(item);
       } else {
         let j = 0;
         while (itemsData[j].id !== itemIds[i]) {
@@ -101,6 +104,21 @@ const spellweaverSpat = {
   "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Spellweaver.dds",
   "id": 38,
   "name": "Spellweaver Emblem",
+  "unique": true
+};
+
+const skirmisherSpat = {
+  "desc": "The holder gains the Skirmisher trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
+  "effects": {
+      "AD": 10.0
+  },
+  "from": [
+      8,
+      1
+  ],
+  "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Skirmisher.dds",
+  "id": 18,
+  "name": "Skirmisher Emblem",
   "unique": true
 };
 
