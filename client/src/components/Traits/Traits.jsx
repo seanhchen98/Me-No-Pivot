@@ -7,7 +7,7 @@ import TraitsList from './TraitsList.jsx';
 const Traits = ({traits}) => {
   let gameTraits = filterNonTraits(traits);
   return (
-    <div className="block level">
+    <div className="block level" style={{justifyContent: 'normal'}}>
       <TraitsList traits={gameTraits}/>
     </div>
   );
