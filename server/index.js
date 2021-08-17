@@ -6,6 +6,7 @@ require('dotenv').config();
 const api_key = process.env.API_KEY;
 
 const { crest } = require('./rankedCrest.js');
+const { unitSplash } = require('./unitSplash.js');
 
 const app = express();
 
@@ -48,8 +49,11 @@ app.get('/search/:summoner', (req, res) => {
 
     axios.get(getTftLeagueAPI).then((response) => {
         let leagueInfo = response.data;
+
         leagueInfo[0].rankedCrest = crest(leagueInfo[0].tier);
+
         console.log('leagueInfo: ', leagueInfo);
+
         /* leagueInfo =
         [
           {
@@ -136,6 +140,9 @@ const grabPlayerMatchData = (matchesDetails, puuid, relevantMatch, res, summoner
       setTimeout(function() {
         if (players[j].puuid === puuid) {
           let aggregateMatch = aggregateMatchData(matchesDetails[i], players[j]);
+          // console.log(aggregateMatch)
+          // over here is where u want to be
+
           relevantMatch.push(aggregateMatch);
           if (relevantMatch.length === matchesDetails.length) {
             sortMatches(relevantMatch);
@@ -147,15 +154,15 @@ const grabPlayerMatchData = (matchesDetails, puuid, relevantMatch, res, summoner
   }
 };
 
-const aggregateMatchData = (matchDetails, relevantMatch) => {
+const aggregateMatchData = (matchDetails, playersGameData) => {
   let info = matchDetails.info;
   let meta = matchDetails.metadata;
   let date = new Date(info.game_datetime);
 
   const determineSet = (set, version) => {
-    let ver = version.substring(version.length - 15, version.length - 1);
+    let ver = parseFloat(version.substring(version.length - 6, version.length - 1));
     console.log('VER: ', ver);
-    if (ver.includes('11.15')) {
+    if (ver > 11.14) {
       return set + 0.5;
     } else {
       return set;
@@ -163,6 +170,15 @@ const aggregateMatchData = (matchDetails, relevantMatch) => {
   };
 
   let setVersion = determineSet(info.tft_set_number, info.game_version);
+
+  for (let i = 0; i < playersGameData.units.length; i++) {
+    let unit = playersGameData.units[i];
+    console.log('********* ', unit);
+    let id = unit.character_id;
+    console.log(' ID : ', id);
+    unit.splash = unitSplash(id);
+  }
+
   return {
     id: meta.match_id,
     unixDate: info.game_datetime,
@@ -172,7 +188,7 @@ const aggregateMatchData = (matchDetails, relevantMatch) => {
     set: setVersion,
     mode: info.tft_game_type,
     version: info.game_version,
-    playerMatchInfo: relevantMatch,
+    playerMatchInfo: playersGameData,
   };
 }
 

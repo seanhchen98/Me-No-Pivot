@@ -11,8 +11,7 @@ const Unit = ({unit}) => {
       <div className="container" style={{height: 80}, {width: 70.59}}></div>
     );
   };
-  let championId = unit.character_id.toLowerCase();
-  let championSplash = checkStage2Units(championId);
+
   const color = addRarityColor(unit.rarity);
 
   return (
@@ -23,7 +22,7 @@ const Unit = ({unit}) => {
         </div>
         <div className="">
           <figure className="image is-48x48" style={{border: `3px solid ${color}`}}>
-            <img src={championSplash} />
+            <img src={unit.splash} />
           </figure>
         </div>
         <div className="level mt-1">
@@ -32,14 +31,6 @@ const Unit = ({unit}) => {
       </div>
     </div>
   );
-};
-
-const checkStage2Units = (championId) => {
-  if (championId === 'tft5_fiddlesticks' || championId === 'tft5_gwen' || championId === 'tft5_missfortune' || championId === 'tft5_pyke' || championId === 'tft5_senna' || championId === 'tft5_tristana' || championId === 'tft5_rakan' || championId === 'tft5_lucian' || championId === 'tft5_irelia' || championId === 'tft5_olaf' || championId === 'tft5_akshan' || championId === 'tft5_galio') {
-    return `https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/${championId}_mobile.tft_set5_stage2.png`;
-  } else {
-    return `https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/${championId}_mobile.tft_set5.png`;
-  }
 };
 
 const addRarityColor = (rarity) => {
