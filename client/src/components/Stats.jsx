@@ -11,8 +11,7 @@ const Stats = ({result}) => {
   let rankedWinrate = (leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses) * 100).toFixed(2);
 
   let recentTop4 = getRecentStats(result.matches);
-  let rankedIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/rankedcrests/04_gold/images/gold_baseface_matte.png`;
-  let rankedCrest = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/content/src/leagueclient/rankedcrests/04_gold/images/gold_crown_d1.png`;
+
   return (
     <div className="box">
       <div className="block columns">
@@ -31,11 +30,13 @@ const Stats = ({result}) => {
         </div>
       </div>
       <div className="container">
-        <div className="box is-dark">
-          <figure className="image is-64x64">
-            <img className="is-rounded" src={rankedIcon}/>
-          </figure>
-          <div className="subtitle">{ranking}</div>
+        <div className="columns">
+          <div className="column is-one-quarter pt-0 pb-1">
+            <figure className="image is-96x96">
+              <img className="is-rounded pb-1" src={leagueInfo.rankedCrest}/>
+            </figure>
+          </div>
+          <div className="column title has-text-centered m-auto">{ranking}</div>
         </div>
         <div className="">Wins: {leagueInfo.wins}</div>
         <div className="">Winrate: {rankedWinrate}%</div>

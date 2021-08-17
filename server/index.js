@@ -5,6 +5,8 @@ const axios = require('axios');
 require('dotenv').config();
 const api_key = process.env.API_KEY;
 
+const { crest } = require('./rankedCrest.js');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -46,6 +48,7 @@ app.get('/search/:summoner', (req, res) => {
 
     axios.get(getTftLeagueAPI).then((response) => {
         let leagueInfo = response.data;
+        leagueInfo[0].rankedCrest = crest(leagueInfo[0].tier);
         console.log('leagueInfo: ', leagueInfo);
         /* leagueInfo =
         [
@@ -196,6 +199,8 @@ const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo
   res.status(200);
   res.send(returnData);
 };
+
+
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}.`);
