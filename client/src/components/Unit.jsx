@@ -34,21 +34,20 @@ const Unit = ({unit}) => {
 };
 
 const addRarityColor = (rarity) => {
-  let color = '';
-  if (rarity === 0) {
-    color = 'grey';
-  } else if (rarity === 1) {
-    color = 'green';
-  } else if (rarity === 2) {
-    color = '#3385ff';
-  } else if (rarity === 3) {
-    color = '#BA55D3';
-  } else if (rarity === 4) {
-    color = '#ffbf00';
-  } else if (rarity === 5) {
-    color = 'red';
+  switch (rarity) {
+    case 0:
+      return 'grey';
+    case 1:
+      return 'green';
+    case 2:
+      return '#3385ff';
+    case 3:
+      return '#BA55D3';
+    case 4:
+      return '#ffbf00';
+    case 5:
+      return 'red';
   }
-  return color;
 };
 
 Unit.propTypes = {
