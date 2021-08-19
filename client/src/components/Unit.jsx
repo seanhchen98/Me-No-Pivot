@@ -26,7 +26,7 @@ const Unit = ({unit}) => {
           </figure>
         </div>
         <div className="level mt-1">
-          <UnitItems itemIds={unit.items}/>
+          <UnitItems itemIds={unit.itemSplashes}/>
         </div>
       </div>
     </div>

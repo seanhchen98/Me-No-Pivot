@@ -5,8 +5,10 @@ const axios = require('axios');
 require('dotenv').config();
 const api_key = process.env.API_KEY;
 
-const { crest } = require('./rankedCrest.js');
-const { unitSplash } = require('./unitSplash.js');
+/* Helper functions to generate static element urls */
+const { crest } = require('./generateRankedCrest.js');
+const { unitSplash } = require('./generateUnitIcons.js');
+const { itemSplashes } = require('./generateItemIcons.js');
 
 const app = express();
 
@@ -104,7 +106,7 @@ app.get('/search/:summoner', (req, res) => {
             }).then(() => {
               if (matchesDetails.length === matches.length) {
                 let relevantMatch = [];
-                grabPlayerMatchData(matchesDetails, summonerInfo.puuid, relevantMatch, res, summonerInfo, leagueInfo, region);
+                 grabPlayerMatchData(matchesDetails, summonerInfo.puuid, relevantMatch, res, summonerInfo, leagueInfo, region);
               }
             }).catch((error) => {
               console.log('ERROR: ', error);
@@ -121,6 +123,7 @@ app.get('/search/:summoner', (req, res) => {
   });
 });
 
+// helper function to convert specific server region to general region
 const applyGeneralRegion = (region) => {
   let matchesRegion = '';
   if (region === 'NA1' || region === 'BR1' || region === 'LA1' || region === 'LA2' || region === 'OC1') {
@@ -133,28 +136,28 @@ const applyGeneralRegion = (region) => {
   return matchesRegion;
 };
 
-const grabPlayerMatchData = (matchesDetails, puuid, relevantMatch, res, summonerInfo, leagueInfo, region) => {
+// grab the specific player from the list of players within a game/match
+const grabPlayerMatchData = async (matchesDetails, puuid, relevantMatch, res, summonerInfo, leagueInfo, region) => {
   for (let i = 0; i < matchesDetails.length; i++) {
     let players = matchesDetails[i].info.participants;
     for (let j = 0; j < players.length; j++) {
       setTimeout(function() {
         if (players[j].puuid === puuid) {
-          let aggregateMatch = aggregateMatchData(matchesDetails[i], players[j]);
-          // console.log(aggregateMatch)
-          // over here is where u want to be
-
-          relevantMatch.push(aggregateMatch);
-          if (relevantMatch.length === matchesDetails.length) {
-            sortMatches(relevantMatch);
-            returnData(res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region);
-          }
+          aggregateMatchData(matchesDetails[i], players[j]).then((aggregateMatch) => {
+            relevantMatch.push(aggregateMatch);
+            if (relevantMatch.length === matchesDetails.length) {
+              sortMatches(relevantMatch);
+              returnData(res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region);
+            }
+          });
         };
       }, 0 * j);
     }
   }
 };
 
-const aggregateMatchData = (matchDetails, playersGameData) => {
+// builds the match object within the json object response
+const aggregateMatchData = async (matchDetails, playersGameData) => {
   let info = matchDetails.info;
   let meta = matchDetails.metadata;
   let date = new Date(info.game_datetime);
@@ -173,10 +176,12 @@ const aggregateMatchData = (matchDetails, playersGameData) => {
 
   for (let i = 0; i < playersGameData.units.length; i++) {
     let unit = playersGameData.units[i];
-    console.log('********* ', unit);
     let id = unit.character_id;
-    console.log(' ID : ', id);
     unit.splash = unitSplash(id);
+    unit.itemSplashes = await itemSplashes(unit.items);
+    while (unit.itemSplashes === undefined) {
+      console.log('waiting for itemicons')
+    }
   }
 
   return {
@@ -192,6 +197,7 @@ const aggregateMatchData = (matchDetails, playersGameData) => {
   };
 }
 
+// helper function to sort the match based off of most recent to least recent match
 const sortMatches = (relevantMatch) => {
   relevantMatch.sort((a,b) => {
     return a.unixDate - b.unixDate;
@@ -199,8 +205,9 @@ const sortMatches = (relevantMatch) => {
   relevantMatch.reverse();
 }
 
+// send response json object to client
 const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region) => {
-  const PATCH = '11.15.1';
+  const PATCH = '11.16.1';
 
   let returnData = {
     name: summonerInfo.name,
@@ -212,8 +219,10 @@ const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo
     matches: relevantMatch,
   };
   console.log('OPERATION COMPLETE, SEND DATA TO CLIENT')
-  res.status(200);
-  res.send(returnData);
+  setTimeout(() => {
+    res.status(200);
+    res.send(returnData);
+  },0)
 };
 
 
