@@ -120,6 +120,8 @@ app.get('/search/:summoner', (req, res) => {
     });
   }).catch((error) => {
     console.log('ERROR: ', error);
+    res.status(400);
+    res.end('Invalid Summoner Name. Please check for the correct region and make sure you have typed the summoner name correctly.');
   });
 });
 
@@ -179,9 +181,6 @@ const aggregateMatchData = async (matchDetails, playersGameData) => {
     let id = unit.character_id;
     unit.splash = unitSplash(id);
     unit.itemSplashes = await itemSplashes(unit.items);
-    while (unit.itemSplashes === undefined) {
-      console.log('waiting for itemicons')
-    }
   }
 
   return {

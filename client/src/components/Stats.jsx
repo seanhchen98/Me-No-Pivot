@@ -36,7 +36,10 @@ const Stats = ({result}) => {
               <img className="is-rounded pb-1" src={leagueInfo.rankedCrest}/>
             </figure>
           </div>
-          <div className="column title has-text-centered m-auto">{ranking}</div>
+          <div className="column mt-5">
+            <div className="title has-text-centered m-auto">{ranking}</div>
+            <div className="subtitle has-text-centered m-auto">{leagueInfo.leaguePoints} LP</div>
+          </div>
         </div>
         <div className="">Wins: {leagueInfo.wins}</div>
         <div className="">Winrate: {rankedWinrate}%</div>

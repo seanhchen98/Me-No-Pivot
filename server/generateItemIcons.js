@@ -3,48 +3,55 @@ const fetch = require('node-fetch');
 //let settings = {method: "Get"};
 
 async function itemSplashes (itemIds) {
-  let res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
-  let result = await res.json();
-  let itemsData = result.items;
-  //console.log(' - - - - - - - itemsData: ', itemsData);
-  let targetItems = [];
-  for (let i = 0; i < itemIds.length; i++) {
-    if (itemIds[i] === 38) {
-      let item = spellweaverSpat;
-      targetItems.push(item);
-    } else if (itemIds[i] === 48) {
-      let item = renewerSpat;
-      targetItems.push(item);
-    } else if (itemIds[i] === 18) {
-      let item = skirmisherSpat;
-      targetItems.push(item);
-    } else {
-      let j = 0;
-      while (itemsData[j].id !== itemIds[i]) {
-        j++;
-      }
-      if (itemsData[j].id === itemIds[i]) {
-        if (itemIds[i] === 99  || itemIds[i] === 2099) {
-          targetItems.push(itemsData[j]);
-          break;
+  if (itemIds.length === 0) {
+    return [];
+  } else {
+    let res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
+    let result = await res.json();
+    let itemsData = result.items;
+    //console.log(' - - - - - - - itemsData: ', itemsData);
+    let targetItems = [];
+    for (let i = 0; i < itemIds.length; i++) {
+      if (itemIds[i] === 38) {
+        let item = spellweaverSpat;
+        targetItems.push(item);
+      } else if (itemIds[i] === 48) {
+        let item = renewerSpat;
+        targetItems.push(item);
+      } else if (itemIds[i] === 18) {
+        let item = skirmisherSpat;
+        targetItems.push(item);
+      } else {
+        let j = 0;
+        while (itemsData[j].id !== itemIds[i]) {
+          j++;
         }
-        if (itemIds[i] !== 10006) {
-          targetItems.push(itemsData[j]);
+        if (itemsData[j].id === itemIds[i]) {
+          if (itemIds[i] === 99  || itemIds[i] === 2099) {
+            targetItems.push(itemsData[j]);
+            break;
+          }
+          if (itemIds[i] !== 10006) {
+            targetItems.push(itemsData[j]);
+          }
         }
       }
     }
+    let output = grabIcons(targetItems);
+    console.log('output: ', output);
+    return output;
   }
-  let output = grabIcons(targetItems);
-  console.log('output: ', output);
-  return output;
-
 };
 
 const grabIcons = (items) => {
   let iconPaths = [];
   for (let i = 0; i < items.length; i++) {
     let url = urlifyIcons(items[i].icon);
-    iconPaths.push(url);
+    iconPaths.push({
+      name: items[i].name,
+      id: items[i].id,
+      url: url
+    });
   }
   return iconPaths;
 };

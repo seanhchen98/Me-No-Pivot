@@ -42,32 +42,32 @@ const UnitItems = ({itemIds}) => {
 
   return (
     <div className="block level">
-      {displayItems.map((icon, index) => (
-        <ItemIcons url={icon} key={index}/>
+      {displayItems.map((item, index) => (
+        <ItemIcons item={item} key={index}/>
       ))}
     </div>
   );
 };
 
-const grabIcons = (items) => {
-  let iconPaths = [];
-  for (let i = 0; i < items.length; i++) {
-    let url = urlifyIcons(items[i].icon);
-    iconPaths.push(url);
-  }
-  return iconPaths;
-};
+// const grabIcons = (items) => {
+//   let iconPaths = [];
+//   for (let i = 0; i < items.length; i++) {
+//     let url = urlifyIcons(items[i].icon);
+//     iconPaths.push(url);
+//   }
+//   return iconPaths;
+// };
 
 // const urlifyIcons = (icon) => {
 //   let path = icon.toLowerCase().substring(0, icon.length - 3);
 //   return `https://raw.communitydragon.org/latest/game/${path}png`;
 // };
 
-const ItemIcons = ({url}) => {
-  if (url) {
+const ItemIcons = ({item}) => {
+  if (item.url) {
     return (
       <figure className="image is-16x16">
-        <img src={url}/>
+        <img src={item.url}/>
       </figure>
     );
   } else {
