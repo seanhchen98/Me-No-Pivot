@@ -9,6 +9,7 @@ const api_key = process.env.API_KEY;
 const { crest } = require('./generateRankedCrest.js');
 const { unitSplash } = require('./generateUnitIcons.js');
 const { itemSplashes } = require('./generateItemIcons.js');
+const { generateTraits } = require('./generateTraitIcons.js');
 
 const app = express();
 
@@ -182,6 +183,8 @@ const aggregateMatchData = async (matchDetails, playersGameData) => {
     unit.splash = unitSplash(id);
     unit.itemSplashes = await itemSplashes(unit.items);
   }
+  playersGameData.traits = generateTraits(playersGameData.traits);
+
 
   return {
     id: meta.match_id,
