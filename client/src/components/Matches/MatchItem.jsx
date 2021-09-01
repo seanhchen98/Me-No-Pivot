@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bulma/css/bulma.min.css';
 
-import Traits from './Traits/Traits.jsx';
+import Traits from '../Traits/Traits.jsx';
 import MatchUnits from './MatchUnits.jsx';
 
 const MatchItem = ({match}) => {

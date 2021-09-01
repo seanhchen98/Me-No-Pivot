@@ -3,7 +3,7 @@ import $ from 'jquery';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
-import Unit from './Unit.jsx';
+import Unit from '../Units/Unit.jsx';
 
 const MatchUnits = ({units}) => {
   if (units.length !== 0) {

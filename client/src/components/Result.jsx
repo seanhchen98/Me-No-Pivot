@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 
 import Stats from './Stats.jsx';
-import Matches from './Matches.jsx';
+import Matches from './Matches/Matches.jsx';
 
 const Result = ({result, searched, searchProgress}) => {
   return (
