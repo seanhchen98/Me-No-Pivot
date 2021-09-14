@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bulma/css/bulma.min.css';
+import PropTypes from 'prop-types';
 
 import Traits from '../Traits/Traits.jsx';
 import MatchUnits from './MatchUnits.jsx';
@@ -64,8 +65,8 @@ const Placement = ({place}) => {
   }
 };
 
-// MatchItem.propTypes = {
-//   match: PropTypes.object,
-// };
+MatchItem.propTypes = {
+  place: PropTypes.number,
+};
 
 export default MatchItem;

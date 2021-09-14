@@ -23,6 +23,7 @@ app.use(express.static(`${__dirname}/../client/dist`));
 app.get('/search/:summoner', (req, res) => {
   const region = req.query.region;
   const summoner = req.query.summoner;
+
   const matchesRegion = applyGeneralRegion(region);
   const getTftSummonerAPI = `https://${region}.api.riotgames.com/tft/summoner/v1/summoners/by-name/${summoner}?api_key=${api_key}`;
 
@@ -126,6 +127,83 @@ app.get('/search/:summoner', (req, res) => {
   });
 });
 
+app.get('/test', async (req, res) => {
+  const region = 'NA1';
+  const summoner = 'genyusaihan';
+  const summonerInfo = await getSummoner(region, summoner, res);
+  const leagueInfo = await getLeague(region, summonerInfo.name, summonerInfo.id);
+  const matchesRegion = applyGeneralRegion(region);
+  // get list of match ids
+  const matches = await getMatches(matchesRegion, summonerInfo.puuid);
+  const matchesData = [];
+  // iterate through list of match ids to get match info
+  for (const match of matches) {
+    // get data from match
+    const matchInfo = await getMatch(matchesRegion, match);
+    matchesData.push(matchInfo);
+  }
+
+  const returnData = {
+    summonerInfo: summonerInfo,
+    leagueInfo: leagueInfo,
+    matches: matchesData.length,
+  };
+  res.send(returnData);
+});
+
+const getSummoner = async (region, summoner, res) => {
+  const getTftSummonerAPI = `https://${region}.api.riotgames.com/tft/summoner/v1/summoners/by-name/${summoner}?api_key=${api_key}`;
+  return await axios.get(getTftSummonerAPI).then((response) => {
+    const summonerInfo = response.data;
+    return summonerInfo;
+  }).catch((error) => {
+    console.log('error: getSummoner error');
+    res.status(200);
+    res.send('error: Summoner name does not exist.');
+  });
+};
+
+const getLeague = async (region, summonerName, summonerId) => {
+  const getTftLeagueAPI = `https://${region}.api.riotgames.com/tft/league/v1/entries/by-summoner/${summonerId}?api_key=${api_key}`;
+  return await axios.get(getTftLeagueAPI).then((response) => {
+    const leagueInfo = response.data;
+    leagueInfo[0].rankedCrest = crest(leagueInfo[0].tier);
+    return leagueInfo;
+  }).catch((error) => {
+    console.log(`error: League info does not yet exist for ${summonerName}.`);
+    console.log('\n', error);
+  })
+};
+
+const getMatches = async (matchesRegion, puuid) => {
+  // puuid = summonerInfo.puuid
+  const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${puuid}/ids?count=200&api_key=${api_key}`;
+  return await axios.get(getTftMatchesAPI).then((response) => {
+    const resMatches = response.data;
+    return resMatches;
+  }).catch((error) => {
+    console.log('ERROR: ', error);
+  });
+};
+
+const getMatch = async (matchesRegion, match) => {
+  // match = matches[i];
+  const matchByIdAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/${match}?api_key=${api_key}`;
+  return await axios.get(matchByIdAPI).then((response) => {
+    // matches.push(response.data);
+    console.log(response.data);
+    return response.data;
+  //}).then(() => {
+  //   if (matches.length === responseMatches.length) {
+  //     const relevantMatch = [];
+  //     grabPlayerMatchData(matches, summonerInfo.puuid, relevantMatch, summonerInfo, leagueInfo, region);
+  //   }
+  }).catch((error) => {
+    console.log('error: No match by id exists');
+  });
+};
+
+
 // helper function to convert specific server region to general region
 const applyGeneralRegion = (region) => {
   let matchesRegion = '';
@@ -209,8 +287,6 @@ const sortMatches = (relevantMatch) => {
 
 // send response json object to client
 const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo, region) => {
-  const PATCH = '11.16.1';
-
   let returnData = {
     name: summonerInfo.name,
     region: region,

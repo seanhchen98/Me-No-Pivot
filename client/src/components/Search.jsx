@@ -25,7 +25,7 @@ const Search = ({handleSearch, inputSearch, selectRegion}) => {
           </div>
         </div>
         <div className="control is-expanded has-icons-left">
-          <input className="input is-normal" type="text" placeholder="Summoner Name" onChange={inputSearch} />
+          <input className="input is-normal" type="text" placeholder="Summoner Name" onChange={inputSearch} autoFocus/>
           <span className="icon is-small is-left">
             <i className="fas fa-user"/>
           </span>

@@ -1,7 +1,5 @@
 const fetch = require('node-fetch');
 
-//let settings = {method: "Get"};
-
 async function itemSplashes (itemIds) {
   if (itemIds.length === 0) {
     return [];
@@ -9,7 +7,6 @@ async function itemSplashes (itemIds) {
     let res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
     let result = await res.json();
     let itemsData = result.items;
-    //console.log(' - - - - - - - itemsData: ', itemsData);
     let targetItems = [];
     for (let i = 0; i < itemIds.length; i++) {
       if (itemIds[i] === 38) {
@@ -61,6 +58,7 @@ const urlifyIcons = (icon) => {
   return `https://raw.communitydragon.org/latest/game/${path}png`;
 };
 
+// fix for the duplicate ID number for certain set 5 traits
 const renewerSpat = {
   "desc": "The holder gains the Renewer trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
   "effects": {
