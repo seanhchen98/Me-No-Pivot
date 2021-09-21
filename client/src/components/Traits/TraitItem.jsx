@@ -10,6 +10,7 @@ const TraitItem = ({trait}) => {
       <div className="level-item" style={{width: 45, height: 34.328}}></div>
     );
   } else {
+    const tooltip = `${trait.name} ${trait.}`
     return (
       <div className="level-item" style={{maxWidth: 45, height: 34.328}}>
         <Tippy content={trait.name}>
