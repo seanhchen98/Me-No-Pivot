@@ -1,6 +1,8 @@
 import React from 'react';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 import Tier from './Tier.jsx';
 import UnitItems from './UnitItems.jsx';
@@ -21,9 +23,11 @@ const Unit = ({unit}) => {
           <Tier tier={unit.tier} color={color}/>
         </div>
         <div className="">
-          <figure className="image is-48x48" style={{border: `3px solid ${color}`}}>
-            <img src={unit.splash} />
-          </figure>
+          <Tippy content={unit.character_id}>
+            <figure className="image is-48x48" style={{border: `3px solid ${color}`}}>
+              <img src={unit.splash} />
+            </figure>
+          </Tippy>
         </div>
         <div className="level mt-1">
           <UnitItems itemIds={unit.itemSplashes}/>

@@ -18,6 +18,9 @@ async function itemSplashes (itemIds) {
       } else if (itemIds[i] === 18) {
         let item = skirmisherSpat;
         targetItems.push(item);
+      } else if (itemIds[i] === 68) {
+        let item = redeemedSpat;
+        targetItems.push(item);
       } else {
         let j = 0;
         while (itemsData[j].id !== itemIds[i]) {
@@ -35,7 +38,7 @@ async function itemSplashes (itemIds) {
       }
     }
     let output = grabIcons(targetItems);
-    console.log('output: ', output);
+    //console.log('output: ', output);
     return output;
   }
 };
@@ -102,6 +105,21 @@ const skirmisherSpat = {
   "id": 18,
   "name": "Skirmisher Emblem",
   "unique": true
+};
+
+const redeemedSpat = {
+  "desc": "The holder gains the Redeemed trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
+            "effects": {
+                "MagicResist": 20.0
+            },
+            "from": [
+                6,
+                8
+            ],
+            "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Redeemed.dds",
+            "id": 68,
+            "name": "Redeemed Emblem",
+            "unique": true
 };
 
 

@@ -1,10 +1,14 @@
 const generateTraits = (traits) => {
-  console.log('\nWHAT IS TRAITS:\n', traits);
+  // console.log('\nWHAT IS TRAITS:\n', traits);
   let output = [];
   let validTraits = filterNonTraits(traits);
-  console.log('asdfasdfasdfasdfasfd')
+
   for (let i = 0; i < validTraits.length; i++) {
     let current = validTraits[i];
+    //console.log('\n CURRENT: ', current);
+    if (current.blank) {
+
+    }
     let individualTrait = {
       name: current.name,
       num_units: current.num_units,
@@ -16,6 +20,7 @@ const generateTraits = (traits) => {
     };
     output.push(individualTrait);
   }
+  console.log('\n', output);
   return output;
 };
 
@@ -32,7 +37,7 @@ const filterNonTraits = (traits) => {
   for (let i = traitsList.length; i < 10; i++) {
     traitsList.push({blank: true});
   }
-  console.log(traitsList)
+  //console.log(traitsList)
   return traitsList;
 };
 
@@ -49,8 +54,11 @@ const applyTraitHex = (style) => {
     }
   };
   const hex = styleTier(style);
-  const hexApiUrl = `https://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-tft/global/default/${hex}.png`;
-  return hexApiUrl;
+  if (style) {
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-fe-lol-tft/global/default/${hex}.png`;
+  } else {
+    return;
+  }
 };
 
 const applyTraitIcon = (name) => {

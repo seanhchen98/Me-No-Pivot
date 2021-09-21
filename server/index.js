@@ -142,12 +142,19 @@ app.get('/test', async (req, res) => {
     const matchInfo = await getMatch(matchesRegion, match);
     matchesData.push(matchInfo);
   }
+  sortMatches(matchesData);
+  const statistics = {};
+  for (const match of matchesData) {
+    await addGameDetails(match);
+    addPlayerProperty(match, summonerInfo.puuid);
+  }
 
   const returnData = {
     summonerInfo: summonerInfo,
     leagueInfo: leagueInfo,
-    matches: matchesData.length,
+    matches: matchesData,
   };
+  res.status(200);
   res.send(returnData);
 });
 
@@ -155,10 +162,11 @@ const getSummoner = async (region, summoner, res) => {
   const getTftSummonerAPI = `https://${region}.api.riotgames.com/tft/summoner/v1/summoners/by-name/${summoner}?api_key=${api_key}`;
   return await axios.get(getTftSummonerAPI).then((response) => {
     const summonerInfo = response.data;
+    summonerInfo.profileIcon = `https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon${summonerInfo.profileIconId}.png`;
     return summonerInfo;
   }).catch((error) => {
     console.log('error: getSummoner error');
-    res.status(200);
+    res.status(400);
     res.send('error: Summoner name does not exist.');
   });
 };
@@ -172,15 +180,15 @@ const getLeague = async (region, summonerName, summonerId) => {
   }).catch((error) => {
     console.log(`error: League info does not yet exist for ${summonerName}.`);
     console.log('\n', error);
-  })
+    return {};
+  });
 };
 
 const getMatches = async (matchesRegion, puuid) => {
   // puuid = summonerInfo.puuid
-  const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${puuid}/ids?count=200&api_key=${api_key}`;
+  const getTftMatchesAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/by-puuid/${puuid}/ids?count=2&api_key=${api_key}`;
   return await axios.get(getTftMatchesAPI).then((response) => {
-    const resMatches = response.data;
-    return resMatches;
+    return response.data;
   }).catch((error) => {
     console.log('ERROR: ', error);
   });
@@ -190,19 +198,57 @@ const getMatch = async (matchesRegion, match) => {
   // match = matches[i];
   const matchByIdAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/${match}?api_key=${api_key}`;
   return await axios.get(matchByIdAPI).then((response) => {
-    // matches.push(response.data);
-    console.log(response.data);
     return response.data;
-  //}).then(() => {
-  //   if (matches.length === responseMatches.length) {
-  //     const relevantMatch = [];
-  //     grabPlayerMatchData(matches, summonerInfo.puuid, relevantMatch, summonerInfo, leagueInfo, region);
-  //   }
   }).catch((error) => {
     console.log('error: No match by id exists');
   });
 };
 
+const addGameDetails = async (match) => {
+  // Add specific Set number to json object
+  const determineSet = (set, version) => {
+    let ver = parseFloat(version.substring(version.length - 6, version.length - 1));
+    if (ver > 11.14) {
+      return {
+        set: Number(set) + 0.5,
+        patch: ver,
+      };
+    } else {
+      return {
+        set: Number(set),
+        patch: ver,
+      };
+    }
+  };
+
+  let version = determineSet(match.metadata.data_version, match.info.game_version);
+  match.metadata.set = version.set;
+  match.metadata.patch = version.patch;
+
+  const participants = match.info.participants;
+  for (const participant of participants) {
+    participant.traits = generateTraits(participant.traits);
+    for (const unit of participant.units) {
+      let id = unit.character_id;
+      unit.icon = unitSplash(id);
+      unit.items = await itemSplashes(unit.items);
+    }
+  }
+  participants.sort((a,b) => {
+    return a.placement - b.placement;
+  });
+};
+
+const addPlayerProperty = (match, puuid) => {
+  let participants = match.info.participants;
+  for (const participant of participants) {
+    if (puuid === participant.puuid) {
+      match.playerMatchInfo = participant;
+    }
+  }
+};
+
+/* ************************************************************************* */
 
 // helper function to convert specific server region to general region
 const applyGeneralRegion = (region) => {
@@ -302,8 +348,6 @@ const returnData = (res, relevantMatch, summonerInfo, matchesDetails, leagueInfo
     res.send(returnData);
   },0)
 };
-
-
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}.`);
