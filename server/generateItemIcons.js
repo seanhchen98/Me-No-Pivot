@@ -1,25 +1,29 @@
 const fetch = require('node-fetch');
 
-async function itemSplashes (itemIds) {
+async function itemSplashes (itemIds, itemsInfo) {
   if (itemIds.length === 0) {
     return [];
   } else {
-    let res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
-    let result = await res.json();
-    let itemsData = result.items;
-    let targetItems = [];
+    // let res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
+    // let result = await res.json();
+    // let itemsData = result.items;
+    const itemsData = itemsInfo;
+    const targetItems = [];
     for (let i = 0; i < itemIds.length; i++) {
       if (itemIds[i] === 38) {
-        let item = spellweaverSpat;
+        const item = spellweaverSpat;
         targetItems.push(item);
       } else if (itemIds[i] === 48) {
-        let item = renewerSpat;
+        const item = renewerSpat;
         targetItems.push(item);
       } else if (itemIds[i] === 18) {
-        let item = skirmisherSpat;
+        const item = skirmisherSpat;
         targetItems.push(item);
       } else if (itemIds[i] === 68) {
-        let item = redeemedSpat;
+        const item = redeemedSpat;
+        targetItems.push(item);
+      } else if (itemIds[i] === 89) {
+        const item = assassinSpat;
         targetItems.push(item);
       } else {
         let j = 0;
@@ -37,16 +41,16 @@ async function itemSplashes (itemIds) {
         }
       }
     }
-    let output = grabIcons(targetItems);
+    const output = grabIcons(targetItems);
     //console.log('output: ', output);
     return output;
   }
 };
 
 const grabIcons = (items) => {
-  let iconPaths = [];
+  const iconPaths = [];
   for (let i = 0; i < items.length; i++) {
-    let url = urlifyIcons(items[i].icon);
+    const url = urlifyIcons(items[i].icon);
     iconPaths.push({
       name: items[i].name,
       id: items[i].id,
@@ -57,7 +61,7 @@ const grabIcons = (items) => {
 };
 
 const urlifyIcons = (icon) => {
-  let path = icon.toLowerCase().substring(0, icon.length - 3);
+  const path = icon.toLowerCase().substring(0, icon.length - 3);
   return `https://raw.communitydragon.org/latest/game/${path}png`;
 };
 
@@ -121,6 +125,23 @@ const redeemedSpat = {
             "name": "Redeemed Emblem",
             "unique": true
 };
+
+const assassinSpat = {
+  "desc": "The holder gains the Assassin trait.<br><br><tftitemrules>[Unique - only one per champion]</tftitemrules>",
+            "effects": {
+                "CritChance": 10.0,
+                "{c4b5579c}": 5.0
+            },
+            "from": [
+                9,
+                8
+            ],
+            "icon": "ASSETS/Maps/Particles/TFT/Item_Icons/Spatula/Assassin.dds",
+            "id": 89,
+            "name": "Assassin Emblem",
+            "unique": true
+
+}
 
 
 module.exports = {

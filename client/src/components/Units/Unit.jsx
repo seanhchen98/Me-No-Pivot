@@ -15,7 +15,6 @@ const Unit = ({unit}) => {
   };
 
   const color = addRarityColor(unit.rarity);
-
   return (
     <div className="container" style={{height: 80}}>
       <div className="">
@@ -25,12 +24,12 @@ const Unit = ({unit}) => {
         <div className="">
           <Tippy content={unit.character_id}>
             <figure className="image is-48x48" style={{border: `3px solid ${color}`}}>
-              <img src={unit.splash} />
+              <img src={unit.icon} />
             </figure>
           </Tippy>
         </div>
         <div className="level mt-1">
-          <UnitItems itemIds={unit.itemSplashes}/>
+          <UnitItems itemIds={unit.items}/>
         </div>
       </div>
     </div>

@@ -17,14 +17,14 @@ const Stats = ({result}) => {
       <div className="block columns">
         <div className="column is-one-third">
           <figure className="image is-96x96" style={{border: '2px solid black'}}>
-            <img src={result.profileIconId} />
+            <img src={result.summonerInfo.profileIcon} />
           </figure>
         </div>
         <div className="column">
-          <div className="title block">{result.name}</div>
+          <div className="title block">{result.summonerInfo.name}</div>
           <div className="block">
-            <div className="tag is-info" style={{marginRight: 4}}>{result.region}</div>
-            <div className="tag is-info" style={{marginRight: 4}}>Lvl. {result.summonerLevel}</div>
+            <div className="tag is-info" style={{marginRight: 4}}>{result.summonerInfo.region}</div>
+            <div className="tag is-info" style={{marginRight: 4}}>Lvl. {result.summonerInfo.summonerLevel}</div>
             <div className="tag is-info" style={{marginRight: 4}}>Set 5.5</div>
           </div>
         </div>
@@ -45,7 +45,7 @@ const Stats = ({result}) => {
         <div className="">Winrate: {rankedWinrate}%</div>
       </div>
       <div className="block">
-        <div className="subtitle">Last 10 games stats</div>
+        <div className="subtitle">Last {result.matches.length} games stats</div>
         <div className="block">
           <div className="">Average Placement: {recentTop4}</div>
         </div>

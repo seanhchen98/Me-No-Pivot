@@ -6,15 +6,15 @@ import Traits from '../Traits/Traits.jsx';
 import MatchUnits from './MatchUnits.jsx';
 
 const MatchItem = ({match}) => {
-  let gamemode = determineGamemode(match);
+  let gamemode = determineGamemode(match.metadata);
   return (
     <div className="container box is-family-primary">
       <div className="columns">
         <div className="column is-one-quarter">
           <Placement place={match.playerMatchInfo.placement}/>
           <div className="subtitle">{gamemode}</div>
-          <h1>Set: {match.set}</h1>
-          <h1>Date: {match.date}</h1>
+          <h1>Set: {match.metadata.set}</h1>
+          <h1>Date: {match.info.date}</h1>
         </div>
         <div className="column is-three-quarters">
           <div className="container block">

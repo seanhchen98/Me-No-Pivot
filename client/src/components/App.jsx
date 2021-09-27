@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import axios from 'axios';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
@@ -19,13 +18,24 @@ class App extends React.Component {
         summoner: '',
       },
       result: {
-        region: 'NA1',
-        name: '',
-        profileIconId: 0,
-        revisionDate: 0,
-        summonerLevel: 0,
+        // region: 'NA1',
+        // name: '',
+        // profileIconId: 0,
+        // revisionDate: 0,
+        // summonerLevel: 0,
         leagueInfo: [],
         matches: [],
+        summonerInfo: {
+          id: '',
+          accountId: '',
+          puuid: '',
+          name: '',
+          profileIconId: null,
+          profileIcon: '',
+          revisionDate: null,
+          summonerLevel: null,
+          region: 'NA1',
+        },
       },
     };
     this.handleSearch = this.handleSearch.bind(this);
@@ -53,11 +63,14 @@ class App extends React.Component {
           summoner: data.summoner,
         },
         result: {
-          region: result.region,
-          name: result.name,
-          profileIconId: result.profileIconId,
-          revisionDate: result.revisionDate,
-          summonerLevel: result.summonerLevel,
+          // region: result.region,
+          // name: result.name,
+          // profileIconId: result.profileIconId,
+          // revisionDate: result.revisionDate,
+          // summonerLevel: result.summonerLevel,
+          // leagueInfo: result.leagueInfo,
+          // matches: result.matches,
+          summonerInfo: result.summonerInfo,
           leagueInfo: result.leagueInfo,
           matches: result.matches,
         },

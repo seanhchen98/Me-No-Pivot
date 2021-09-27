@@ -6,7 +6,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 const UnitItems = ({itemIds}) => {
-
   let displayItems = itemIds;
 
   return (

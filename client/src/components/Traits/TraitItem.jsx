@@ -10,10 +10,10 @@ const TraitItem = ({trait}) => {
       <div className="level-item" style={{width: 45, height: 34.328}}></div>
     );
   } else {
-    const tooltip = `${trait.name} ${trait.}`
+    const tooltip = `${trait.shortName} ${trait.number}`;
     return (
       <div className="level-item" style={{maxWidth: 45, height: 34.328}}>
-        <Tippy content={trait.name}>
+        <Tippy content={tooltip}>
           <div className="is-align-items-center is-justify-content-center" style={{backgroundImage: `url(${trait.hex})`, backgroundSize: '29.67px 34.33px', width: 30, height: 34.34, marginLeft: 0}}>
             <figure className="image is-16x16 m-auto is-unselectable">
               <img className="is-unselectable" src={trait.icon} style={{verticalAlign: 'bottom', filter: 'invert(100%)'}}/>

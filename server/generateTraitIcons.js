@@ -1,15 +1,15 @@
-const generateTraits = (traits) => {
+const traitIcons = (traits) => {
   // console.log('\nWHAT IS TRAITS:\n', traits);
-  let output = [];
-  let validTraits = filterNonTraits(traits);
+  const output = [];
+  const validTraits = filterNonTraits(traits);
 
   for (let i = 0; i < validTraits.length; i++) {
-    let current = validTraits[i];
+    const current = validTraits[i];
     //console.log('\n CURRENT: ', current);
     if (current.blank) {
 
     }
-    let individualTrait = {
+    const individualTrait = {
       name: current.name,
       num_units: current.num_units,
       style: current.style,
@@ -20,12 +20,12 @@ const generateTraits = (traits) => {
     };
     output.push(individualTrait);
   }
-  console.log('\n', output);
+  //console.log('\n', output);
   return output;
 };
 
 const filterNonTraits = (traits) => {
-  let traitsList = [];
+  const traitsList = [];
   for (let i = 0; i < traits.length; i++) {
     if (traits[i].style >= 1) {
       traitsList.push(traits[i]);
@@ -119,5 +119,5 @@ const applyTraitIcon = (name) => {
 };
 
 module.exports = {
-  generateTraits,
+  traitIcons,
 };
