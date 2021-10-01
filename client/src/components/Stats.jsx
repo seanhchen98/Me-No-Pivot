@@ -3,11 +3,12 @@ import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
 const Stats = ({result}) => {
-  const ranking = generateRankString(result.leagueInfo);
-  let leagueInfo = {};
-  if (result.leagueInfo[0]) {
-    leagueInfo = result.leagueInfo[0];
-  };
+  let leagueInfo = result.leagueInfo;
+  const ranking = generateRankString(leagueInfo);
+  // let leagueInfo = {};
+  // if (result.leagueInfo[0]) {
+  //   leagueInfo = result.leagueInfo[0];
+  // };
   let rankedWinrate = (leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses) * 100).toFixed(2);
 
   let recentTop4 = getRecentStats(result.matches);
@@ -54,19 +55,31 @@ const Stats = ({result}) => {
   );
 };
 
-const generateRankString = (gamemodes) => {
+// const generateRankString = (gamemodes) => {
+//   let ranking;
+//   if (gamemodes.length < 1) {
+//     ranking = 'UNRANKED';
+//   }
+//   for (let i = 0; i < gamemodes.length; i++) {
+//     let gamemode = gamemodes[i];
+//     if (gamemode.queueType === 'RANKED_TFT') {
+//       if (gamemode.tier === 'MASTER' || gamemode.tier ==='GRANDMASTER' || gamemode.tier === 'CHALLENGER') {
+//         ranking = gamemode.tier;
+//       } else {
+//         ranking = `${gamemode.tier} ${gamemode.rank}`;
+//       }
+//     }
+//   }
+//   return ranking;
+// };
+
+const generateRankString = (gamemode) => {
   let ranking;
-  if (gamemodes.length < 1) {
-    ranking = 'UNRANKED';
-  }
-  for (let i = 0; i < gamemodes.length; i++) {
-    let gamemode = gamemodes[i];
-    if (gamemode.queueType === 'RANKED_TFT') {
-      if (gamemode.tier === 'MASTER' || gamemode.tier ==='GRANDMASTER' || gamemode.tier === 'CHALLENGER') {
-        ranking = gamemode.tier;
-      } else {
-        ranking = `${gamemode.tier} ${gamemode.rank}`;
-      }
+  if (gamemode.queueType === 'RANKED_TFT') {
+    if (gamemode.tier === 'MASTER' || gamemode.tier ==='GRANDMASTER' || gamemode.tier === 'CHALLENGER') {
+      ranking = gamemode.tier;
+    } else {
+      ranking = `${gamemode.tier} ${gamemode.rank}`;
     }
   }
   return ranking;

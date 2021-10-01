@@ -1,4 +1,5 @@
 const traitInfo = (trait) => {
+  //console.log('trait in question: ', trait.name);
   const info = {};
   switch (trait.name) {
     case 'Set5_Abomination':
@@ -346,16 +347,14 @@ const traitInfo = (trait) => {
 
     // retired traits from set 5.0
 
-    case 'Set5_GodKing':
-      info.shortName = trait.name.substring(5);
-      info.number = 1;
-      return info;
+    // case 'Set5_GodKing':
 
-    case 'Set5_DragonSlayer':
-      info.shortName = trait.name.substring(5);
-      if (trait.style === 1) {
 
-      }
+    // case 'Set5_DragonSlayer':
+    //   info.shortName = trait.name.substring(5);
+    //   if (trait.style === 1) {
+
+    //   }
   }
 }
 

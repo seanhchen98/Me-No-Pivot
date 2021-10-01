@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const fetch = require('node-fetch');
+const mongoose = require('mongoose');
 
 require('dotenv').config();
 const api_key = process.env.API_KEY;
+const mongo_pw = process.env.MONGO_PW;
 
 /* Helper functions to generate static element urls */
 const { crest } = require('./generateRankedCrest.js');
@@ -18,12 +20,181 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static(`${__dirname}/../client/dist`));
 
+const CONNECTION_URL = `mongodb+srv://seanhchen98:${mongo_pw}@cluster0.urmg0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
+mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true}).then(
+  () => {
+    console.log('* CONNECTED TO MONGODB *')
+  }
+).then(
+  () => {
+    app.listen(PORT, () => {
+      console.log(`Listening on port ${PORT}.`);
+    });
+  }
+);
 
+const { Match } = require('./models/match.js');
+const { League } = require('./models/league.js');
+const { Summoner } = require('./models/summoner.js');
+
+const CURRENT_SET = 5.5;
+
+// app.get('/search/:region/:summoner', async (req, res) => {
+//   const { region, summoner } = req.params;
+//   console.log('region: ', region);
+//   console.log('summoner: ', summoner);
+//   const summonerInfo = await Summoner.findOne({ name: `${summoner}`, region: `${region}` }).exec();
+//   await console.log('summmmmm: ', summonerInfo);
+//   if (summonerInfo) {
+//     const leagueInfo = await League.findOne({ summonerId: `${summonerInfo.id}` }).exec();
+//     const matches = await Match.find({ 'metadata.participants': `${summonerInfo.puuid}`}).exec();
+//     await console.log('matches: ', matches);
+//     await console.log('\n');
+//     for (const match of matches) {
+//       console.log('current match: ', match);
+//       addPlayerProperty(match, summonerInfo.puuid);
+//     }
+//     sortMatches(matches);
+//     const returnData = {
+//       summonerInfo: summonerInfo,
+//       leagueInfo: leagueInfo,
+//       matches: matches,
+//     };
+//     res.status(200);
+//     res.send(returnData);
+//   } else {
+//     res.status(400);
+//     res.send('does not exist');
+//   }
+// });
+
+app.get('/search/:summoner', async (req, res) => {
+  const region = req.query.region;
+  const summoner = req.query.summoner;
+  console.log('region: ', region);
+  console.log('summoner: ', summoner);
+  const summonerInfo = await Summoner.findOne({ name: `${summoner}`, region: `${region}`}).exec();
+  await console.log('summmmmm: ', summonerInfo);
+  if (summonerInfo) {
+    const leagueInfo = await League.findOne({ summonerId: `${summonerInfo.id}` }).exec();
+    const matches = await Match.find({ 'metadata.participants': `${summonerInfo.puuid}`}).lean().exec();
+    await console.log('matches: ', matches);
+    await console.log('\n');
+    //const returnMatches = [];
+    for (const match of matches) {
+      console.log('current match: ', match);
+      match.playerMatchInfo = await addPlayerProperty(match, summonerInfo.puuid);
+    }
+    for (const match of matches) {
+      console.log('\n*************');
+      console.log('playerMatchInfo: ', match.playerMatchInfo);
+    }
+    sortMatches(matches);
+    console.log(' - - - - - - - - - - - - - - - \n\n\n');
+    console.log(matches[0].playerMatchInfo)
+    const returnData = {
+      summonerInfo: summonerInfo,
+      leagueInfo: leagueInfo,
+      matches: matches,
+    };
+    // console.log('\n**** RETURN DATA ****');
+    // console.log(returnData);
+
+    // console.log('@@@@@@@@@@@@@@@@@')
+    // console.log(returnData.matches);
+    await res.status(200);
+    await res.send(returnData);
+
+  } else {
+
+    console.log('does not exist in db, adding to db');
+    const summonerInfo = await getSummoner(region, summoner, res);
+    Summoner.create(summonerInfo, (err) => {
+    if (err) {
+      return handleError(err);
+    }});
+
+    const leagueInfo = await getLeague(region, summonerInfo.name, summonerInfo.id);
+    League.create(leagueInfo, (err) => {
+      if (err) {
+        return handleError(err);
+      }
+    });
+
+    const generalRegion = applyGeneralRegion(region);
+
+    const listOfMatches = await getMatches(generalRegion, summonerInfo.puuid);
+
+    for (const match of listOfMatches) {
+      //console.log('___match: ', match);
+      const matchInfo = await getMatch(generalRegion, match);
+      //await console.log('_ _ matchInfo: ', matchInfo);
+      if (matchInfo) {
+        //console.log('^^^^^^ MatchInfo.metadata: ', matchInfo.metadata.match_id);
+
+        const version = await determineSet(matchInfo.metadata.data_version, matchInfo.info.game_version);
+        matchInfo.metadata.set = version.set;
+        matchInfo.metadata.patch = version.patch;
+
+        //console.log('match in question: ', matchInfo.metadata.match_id);
+        if (matchInfo.metadata.set === 5.5) {
+          await addGameDetails(matchInfo);
+          Match.create(matchInfo, (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        } else {
+            console.log(`${matchInfo.metadata.match_id} is a game from previous set`);
+            break;
+        }
+      } else {
+        console.log('NON EXISTENT MATCH')
+      }
+    }
+    retrieveSummonerFromDatabase(summoner, region, res);
+}});
+
+const retrieveSummonerFromDatabase = async (summoner, region, res) => {
+  const summonerInfo = await Summoner.findOne({ name: `${summoner}`, region: `${region}`}).exec();
+  if (summonerInfo) {
+    await console.log('summmmmm: ', summonerInfo);
+    const leagueInfo = await League.findOne({ summonerId: `${summonerInfo.id}` }).exec();
+    const matches = await Match.find({ 'metadata.participants': `${summonerInfo.puuid}`}).lean().exec();
+    await console.log('matches: ', matches);
+    await console.log('\n');
+    //const returnMatches = [];
+    for (const match of matches) {
+      console.log('current match: ', match);
+      match.playerMatchInfo = addPlayerProperty(match, summonerInfo.puuid);
+    }
+    for (const match of matches) {
+      console.log('\n*************');
+      console.log('playerMatchInfo: ', match.playerMatchInfo);
+    }
+    sortMatches(matches);
+    console.log(' - - - - - - - - - - - - - - - \n\n\n');
+    console.log(matches[0].playerMatchInfo)
+    const returnData = {
+      summonerInfo: summonerInfo,
+      leagueInfo: leagueInfo,
+      matches: matches,
+    };
+    // console.log('\n**** RETURN DATA ****');
+    // console.log(returnData);
+
+    // console.log('@@@@@@@@@@@@@@@@@')
+    // console.log(returnData.matches);
+    await res.status(200);
+    await res.send(returnData);
+  }
+};
+/*
 app.get('/search/:summoner', async (req, res) => {
   const region = req.query.region;
   const summoner = req.query.summoner;
@@ -72,7 +243,7 @@ app.get('/search/:summoner', async (req, res) => {
   res.status(200);
   res.send(returnData);
 });
-
+*/
 const getSummoner = async (region, summoner, res) => {
   console.log('* getSummoner *');
   const getTftSummonerAPI = `https://${region}.api.riotgames.com/tft/summoner/v1/summoners/by-name/${summoner}?api_key=${api_key}`;
@@ -119,7 +290,7 @@ const getMatch = async (matchesRegion, match) => {
   //console.log('    match: ', )
   const matchByIdAPI = `https://${matchesRegion}.api.riotgames.com/tft/match/v1/matches/${match}?api_key=${api_key}`;
   return await axios.get(matchByIdAPI).then((response) => {
-    console.log('Grabbing: ', match.metadata);
+    //console.log('Grabbing: ', match.metadata);
     //console.log('\n')
     return response.data;
   }).catch((error) => {
@@ -158,10 +329,14 @@ const addGameDetails = async (match) => {
 };
 
 const addPlayerProperty = (match, puuid) => {
+  console.log('inside ADDPLAYERPROPERTY');
+  console.log('match: ', match);
+  console.log('puuid: ', puuid);
   const participants = match.info.participants;
   for (const participant of participants) {
     if (puuid === participant.puuid) {
-      match.playerMatchInfo = participant;
+      //match.playerMatchInfo = participant;
+      return participant;
     }
   }
 };
@@ -188,23 +363,23 @@ const sortMatches = (relevantMatch) => {
 }
 
 const determineSet = (set, version) => {
+  console.log('VERSION:   ', version);
   const ver = parseFloat(version.substring(version.length - 6, version.length - 1));
+  console.log('ver: ', ver);
   if (ver > 11.14) {
+    console.log('set 5.5')
     return {
       set: Number(set) + 0.5,
       patch: ver,
     };
   } else {
+    console.log('set 5')
     return {
       set: Number(set),
       patch: ver,
     };
   }
 };
-
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}.`);
-});
 
 /* ************************************************************************* */
 

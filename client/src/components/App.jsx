@@ -43,6 +43,24 @@ class App extends React.Component {
     this.selectRegion = this.selectRegion.bind(this);
   };
 
+  // componentDidMount() {
+  //   console.log('hello')
+  //   $.get(`http://localhost:3000/${window.location.pathname}`, (result) => {
+  //     this.setState({
+  //       searched: true,
+  //       searchProgress: 'complete',
+  //       search: {
+  //         region: result.region,
+  //         summoner: result.summoner,
+  //       },
+  //       result: {
+  //         summonerInfo: result.summonerInfo,
+  //         leagueInfo: result.leagueInfo,
+  //         matches: result.matches,
+  //       },
+  //     });
+  //   })
+  // }
   // performs ajax request with summoner name and region
   handleSearch(e) {
     e.preventDefault();
