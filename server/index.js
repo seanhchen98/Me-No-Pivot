@@ -195,7 +195,18 @@ app.get("/search/:summoner", async (req, res) => {
 });
 
 app.post("/create/:summoner", cors(), async (req, res) => {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
   const region = req.body.region;
   const summoner = req.body.summoner;
   createNewSummoner(region, summoner, res);
@@ -203,6 +214,19 @@ app.post("/create/:summoner", cors(), async (req, res) => {
 
 app.post("/update/:summoner", cors(), async (req, res) => {
   console.log("in update");
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
   updateSummoner(req, res);
 });
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
