@@ -5,14 +5,21 @@ import 'bulma/css/bulma.min.css';
 import MatchesList from './MatchesList.jsx';
 
 const Matches = ({matches}) => {
-  return (
-    <div className="">
-      <div className="subtitle">
-        Last {matches.length} most recent games
+  //console.log('Matches matches: ', matches);
+  if (matches) {
+    return (
+      <div className="">
+        <div className="subtitle">
+          Last {matches.length} most recent games
+        </div>
+        <MatchesList matches={matches} />
       </div>
-      <MatchesList matches={matches} />
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className=""></div>
+    )
+  }
 };
 
 Matches.propTypes = {

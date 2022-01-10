@@ -1,4 +1,4 @@
-const traitInfo = (trait) => {
+const traitInfo = (trait, tftInfo) => {
   //console.log('trait in question: ', trait.name);
   const info = {};
   switch (trait.name) {
@@ -327,17 +327,18 @@ const traitInfo = (trait) => {
       return info;
 
     case 'Set5_Spellweaver':
-      trait.shortName = trait.name.substring(5);
+      info.shortName = trait.name.substring(5);
       if (trait.style === 1) {
         // spellweaver 2
-        trait.number = 2;
+        info.number = 2;
       } else if (trait.style === 2) {
         // spellweaver 4
-        trait.number === 4;
+        info.number === 4;
       } else if (trait.style === 3) {
         // spellweaver 6
-        trait.number === 6;
+        info.number === 6;
       }
+      return info;
 
     case 'Set5_Victorious':
       info.shortName = trait.name.substring(5);
@@ -349,17 +350,293 @@ const traitInfo = (trait) => {
 
     // case 'Set5_GodKing':
 
-
     // case 'Set5_DragonSlayer':
     //   info.shortName = trait.name.substring(5);
     //   if (trait.style === 1) {
 
     //   }
+
+    ///////// SET 6 - TRAITS ////////////////
+
+    case 'Set6_Academy':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      } else if (trait.style === 4) {
+        info.number = 8;
+      }
+      return info;
+
+    case 'Set6_Arcanist':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      } else if (trait.style === 4) {
+        info.number = 8;
+      }
+
+    case 'Set6_Assassin':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Bodyguard':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      } else if (trait.style === 4) {
+        info.number = 8;
+      }
+      return info;
+
+    case 'Set6_Bruiser':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      } else if (trait.style === 4) {
+        info.number = 8;
+      }
+      return info;
+
+    case 'Set6_Challenger':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+
+      }
+      return info;
+
+    case 'Set6_Chemtech':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 2) {
+        info.number = 5;
+      } else if (trait.style === 3) {
+        info.number = 7;
+      } else if (trait.style === 4) {
+        info.number = 9;
+      }
+      return info;
+
+    case 'Set6_Clockwork':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Colossus':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 3) {
+        info.number = 2;
+      }
+      return info;
+
+    case 'Set6_Cuddly':
+      info.shortName = trait.name.substring(5);
+      info.number = 1;
+      return info;
+
+    case 'Set6_Enchanter':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 5;
+      }
+      return info;
+
+    case 'Set6_Enforcer':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      }
+      return info;
+
+    case 'Set6_Glutton':
+      info.shortName = trait.name.substring(5);
+      info.number = 1;
+      return info;
+
+    case 'Set6_Imperial':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 3) {
+        info.number = 3;
+      } else if (trait.style === 4) {
+        info.number = 5;
+      }
+      return info;
+
+    case 'Set6_Innovator':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 5;
+      } else if (trait.style === 4) {
+        info.number = 7;
+      }
+      return info;
+
+    case 'Set6_Mercenary':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 5;
+      } else if (trait.style === 4) {
+        info.number = 7;
+      }
+      return info;
+
+    case 'Set6_Mutant':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 5;
+      }
+      return info;
+
+    case 'Set6_Protector':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 5;
+      }
+      return info;
+
+    case 'Set6_Scholar':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Scrap':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 2) {
+        info.number  = 4;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Sister':
+      info.shortName = trait.name.substring(5);
+      info.number = 2;
+      return info;
+
+    case 'Set6_Socialite':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 1;
+      } else if (trait.style === 2) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 3;
+      }
+      return info;
+
+    case 'Set6_Sniper':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Syndicate':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 5;
+      } else if (trait.style === 4) {
+        info.number = 7;
+      }
+      return info;
+
+    case 'Set6_Transformer':
+      info.shortName = trait.name.substring(5);
+      info.number = 1;
+      return info;
+
+    case 'Set6_Twinshot':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 2;
+      } else if (trait.style === 3) {
+        info.number = 4;
+      } else if (trait.style === 4) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_Yordle':
+      info.shortName = trait.name.substring(5);
+      if (trait.style === 1) {
+        info.number = 3;
+      } else if (trait.style === 3) {
+        info.number = 6;
+      }
+      return info;
+
+    case 'Set6_YordleLord':
+      info.shortName = trait.name.substring(5);
+      info.number = 1;
+      return info;
+
   }
 }
-
-
-
 
 module.exports = {
   traitInfo,

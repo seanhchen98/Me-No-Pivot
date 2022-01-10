@@ -62,6 +62,7 @@ const applyTraitHex = (style) => {
 };
 
 const applyTraitIcon = (name) => {
+  //console.log('name: ', name);
   switch (name) {
     case 'Set5_Abomination':
       return 'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_5_aberration.png';
@@ -115,7 +116,34 @@ const applyTraitIcon = (name) => {
       return 'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_5_sorcerer.png';
     case 'Set5_Victorious':
       return 'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_5_victorious.png';
+
+    // SET 6 TRAITS
   }
+  if (!name) {
+    return;
+  }
+  let traitSet = name.substring(3, 4);
+  let traitName = name.substring(5).toLowerCase();
+
+  if (traitName === 'bodyguard') {
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_${traitSet}_hero.png`;
+  } else if (traitName === 'yordlelord') {
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_${traitSet}_yordlelord.tft_set6.png`;
+  } else if (traitName === 'trainingdummy') {
+    return 'https://raw.communitydragon.org/latest/game/assets/ux/tft/championsplashes/tftdebug_dummy_mobile.tft_1022.png';
+  } else if (traitName === 'cuddly') {
+    return 'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_6_cuddly.tft_set6.png';
+  } else if (traitName === 'sister') {
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_${traitSet}_${traitName}s.png`;
+  } else if (traitName === 'mutant') {
+    return 'https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_6_experimental.png';
+  } else if (traitName === 'protector') {
+    return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_3_protector.png`;
+  }
+
+  return `https://raw.communitydragon.org/pbe/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/trait_icon_${traitSet}_${traitName}.png`;
+
+
 };
 
 module.exports = {

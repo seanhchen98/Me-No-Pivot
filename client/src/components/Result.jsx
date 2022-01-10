@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import Stats from './Stats.jsx';
 import Matches from './Matches/Matches.jsx';
 
-const Result = ({result, searched, searchProgress}) => {
+const Result = ({result, searched, searchProgress, updateSummoner, puuid}) => {
   return (
     <div className="section is-fluid" style={{display: searched && (searchProgress !== 'pending') ? 'block' : 'none'}}>
       <div className="container box">
         <div className="columns">
           <div className="column is-one-third">
-            <Stats result={result} />
+            <Stats result={result} updateSummoner={updateSummoner} puuid={puuid}/>
           </div>
           <div className="column is-two-thirds">
             <Matches matches={result.matches} />

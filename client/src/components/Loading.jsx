@@ -13,7 +13,7 @@ const Loading = ({searchProgress}) => {
 };
 
 Loading.propTypes = {
-  searchProgress: PropTypes.bool,
+  searchProgress: PropTypes.string,
 };
 
 export default Loading;

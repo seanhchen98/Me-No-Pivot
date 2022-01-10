@@ -6,6 +6,9 @@ const matchSchema = mongoose.Schema({
     game_datetime: Number,
     game_length: Number,
     game_version: String,
+    queue_id: Number,
+    tft_game_type: String,
+    tft_set_number: Number,
     participants: [
       {
         companion: {
@@ -48,9 +51,6 @@ const matchSchema = mongoose.Schema({
             tier: Number,
           }
         ],
-        queue_id: Number,
-        tft_game_type: String,
-        tft_set_number: Number,
       }
     ],
   },

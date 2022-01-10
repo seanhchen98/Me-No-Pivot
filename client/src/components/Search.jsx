@@ -3,13 +3,13 @@ import $ from 'jquery';
 import 'bulma/css/bulma.min.css';
 import PropTypes from 'prop-types';
 
-const Search = ({handleSearch, inputSearch, selectRegion}) => {
+const Search = ({handleSearch, searchRegion, searchSummoner, inputSearch, selectRegion }) => {
   return (
     <form className="" onSubmit={handleSearch}>
       <div className="field has-addons">
         <div className="control">
-          <div className="select" onChange={selectRegion}>
-            <select>
+          <div className="select" onChange={(e)=> {selectRegion(e)}}>
+            <select defaultValue="NA1">
               <option value="BR1">BR</option>
               <option value="EUN1">EUNE</option>
               <option value="EUW1">EUW</option>
@@ -17,7 +17,7 @@ const Search = ({handleSearch, inputSearch, selectRegion}) => {
               <option value="KR">KR</option>
               <option value="LA1">LAN</option>
               <option value="LA2">LAS</option>
-              <option value="NA1" selected>NA</option>
+              <option value="NA1">NA</option>
               <option value="OC1">OCE</option>
               <option value="TR1">TR1</option>
               <option value="RU">RU</option>
@@ -25,7 +25,7 @@ const Search = ({handleSearch, inputSearch, selectRegion}) => {
           </div>
         </div>
         <div className="control is-expanded has-icons-left">
-          <input className="input is-normal" type="text" placeholder="Summoner Name" onChange={inputSearch} autoFocus/>
+          <input className="input is-normal" type="text" placeholder="Summoner Name" onChange={(e)=> {inputSearch(e)}} autoFocus/>
           <span className="icon is-small is-left">
             <i className="fas fa-user"/>
           </span>
