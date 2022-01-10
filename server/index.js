@@ -25,7 +25,7 @@ app.use(cors({
   credentials: true,
   preflightContinue: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH' , 'DELETE', 'OPTIONS'],
-  origin: true,
+  origin: 'https://me-no-pivot.web.app/',
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -393,7 +393,7 @@ const retrieveSummonerFromDatabase = async (summoner, region, res) => {
     await console.log('returnData length: ', returnData.matches.length);
     await console.log("sending data back to client");
     // Website you wish to allow to connect
-    await res.setHeader('Access-Control-Allow-Origin', '*');
+    await res.setHeader('Access-Control-Allow-Origin', 'https://me-no-pivot.web.app/');
 
     // Request methods you wish to allow
     await res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
