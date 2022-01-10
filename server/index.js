@@ -5,6 +5,7 @@ const axiosRetry = require("axios-retry");
 const fetch = require("node-fetch");
 const mongoose = require("mongoose");
 const timeout = require('connect-timeout');
+const cors = require('cors');
 
 require("dotenv").config();
 const api_key = process.env.API_KEY;
@@ -20,6 +21,7 @@ const { traitInfo } = require("./generateTraitInfo.js");
 const app = express();
 
 //app.use(timeout('300s'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
