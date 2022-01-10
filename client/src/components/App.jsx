@@ -32,7 +32,7 @@ const App = () => {
       region: searchRegion,
       summoner: searchSummoner,
     };
-    $.get(`http://localhost:5000/search/${data.summoner}`, data, (result) => {
+    $.get(`https://me-no-pivot.herokuapp.com/search/${data.summoner}`, data, (result) => {
       if (result.create) {
         createSummoner(data);
       } else {
@@ -44,7 +44,7 @@ const App = () => {
   };
 
   const createSummoner = (data) => {
-    $.post(`http://localhost:5000/create/${data.summoner}`, data, (result) => {
+    $.post(`https://me-no-pivot.herokuapp.com/create/${data.summoner}`, data, (result) => {
       setSearched(true);
       setSearchProgress('completed');
       setResult(result);
@@ -59,7 +59,7 @@ const App = () => {
       summoner: searchSummoner,
       puuid: puuid,
     };
-    $.post(`http://localhost:5000/update/${data.summoner}`, data, (result) => {
+    $.post(`https://me-no-pivot.herokuapp.com/update/${data.summoner}`, data, (result) => {
       setSearched(true);
       setSearchProgress('completed');
       setResult(result);
