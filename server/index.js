@@ -21,7 +21,12 @@ const { traitInfo } = require("./generateTraitInfo.js");
 const app = express();
 
 //app.use(timeout('300s'));
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  preflightContinue: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH' , 'DELETE', 'OPTIONS'],
+  origin: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
