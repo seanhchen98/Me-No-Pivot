@@ -189,13 +189,14 @@ app.get("/search/:summoner", async (req, res) => {
   }
 });
 
-app.post("/create/:summoner", async (req, res) => {
+app.post("/create/:summoner", cors(), async (req, res) => {
+
   const region = req.body.region;
   const summoner = req.body.summoner;
   createNewSummoner(region, summoner, res);
 });
 
-app.post("/update/:summoner", async (req, res) => {
+app.post("/update/:summoner", cors(), async (req, res) => {
   console.log("in update");
   updateSummoner(req, res);
 });
