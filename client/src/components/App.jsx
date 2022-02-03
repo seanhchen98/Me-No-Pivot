@@ -32,7 +32,9 @@ const App = () => {
       region: searchRegion,
       summoner: searchSummoner,
     };
-    $.get(`https://me-no-pivot.herokuapp.com/search/${data.summoner}`, data, (result) => {
+
+    // `https://me-no-pivot.herokuapp.com/search/${data.summoner}`
+    $.get(`http://localhost:5000/search/${data.region}/${data.summoner}`, data, (result) => {
       if (result.create) {
         createSummoner(data);
       } else {
@@ -41,6 +43,15 @@ const App = () => {
         setResult(result);
       }
     });
+    // axios.get(`localhost:5000/${data.region}/${data.summoner}`, { params: data }).then((result) => {
+    //   if (result.create) {
+    //     createSummoner(data);
+    //   } else {
+    //     setSearched(true);
+    //     setSearchProgress('completed');
+    //     setResult(result);
+    //   }
+    // });
   };
 
   const createSummoner = (data) => {
@@ -49,6 +60,7 @@ const App = () => {
       setSearchProgress('completed');
       setResult(result);
     });
+
   }
 
   const updateSummoner = (event) => {
@@ -59,7 +71,7 @@ const App = () => {
       summoner: searchSummoner,
       puuid: puuid,
     };
-    $.post(`https://me-no-pivot.herokuapp.com/update/${data.summoner}`, data, (result) => {
+    $.post(`https://me-no-pivot.herokuapp.com/update/${data.region}/${data.summoner}`, data, (result) => {
       setSearched(true);
       setSearchProgress('completed');
       setResult(result);

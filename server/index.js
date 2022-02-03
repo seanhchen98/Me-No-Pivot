@@ -25,7 +25,7 @@ app.use(cors({
   credentials: true,
   preflightContinue: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH' , 'DELETE', 'OPTIONS'],
-  origin: 'https://me-no-pivot.web.app/',
+  origin: true,
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,7 +57,7 @@ const CURRENT_SET = 6;
 
 /* - - - - - - - - - - Main API endpoints - - - - - - - - -- - - */
 
-app.get("/search/:summoner", async (req, res) => {
+app.get("/search/:region/:summoner", async (req, res) => {
   const region = req.query.region;
   let summoner = req.query.summoner;
   console.log("region: ", region);
@@ -194,7 +194,7 @@ app.get("/search/:summoner", async (req, res) => {
   }
 });
 
-app.post("/create/:summoner", cors(), async (req, res) => {
+app.post("/create/:region/:summoner", cors(), async (req, res) => {
   const region = req.body.region;
   const summoner = req.body.summoner;
   createNewSummoner(region, summoner, res);
@@ -393,7 +393,7 @@ const retrieveSummonerFromDatabase = async (summoner, region, res) => {
     await console.log('returnData length: ', returnData.matches.length);
     await console.log("sending data back to client");
     // Website you wish to allow to connect
-    await res.setHeader('Access-Control-Allow-Origin', 'https://me-no-pivot.web.app/');
+    await res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     await res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
